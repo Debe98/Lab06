@@ -5,12 +5,16 @@
 package it.polito.tdp.meteo;
 
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+
+import it.polito.tdp.meteo.model.Model;
+import it.polito.tdp.meteo.model.Percorso;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
+
 
 public class FXMLController {
 
@@ -21,7 +25,7 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxMese"
-    private ChoiceBox<?> boxMese; // Value injected by FXMLLoader
+    private ChoiceBox<Integer> boxMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnUmidita"
     private Button btnUmidita; // Value injected by FXMLLoader
@@ -34,12 +38,22 @@ public class FXMLController {
 
     @FXML
     void doCalcolaSequenza(ActionEvent event) {
-
+    	int mese = boxMese.getValue();
+    	Percorso ottimo = modello.trovaSequenza(mese);
+    	
+    	txtResult.setText(ottimo.toString());
     }
 
     @FXML
     void doCalcolaUmidita(ActionEvent event) {
-
+    	int mese = boxMese.getValue();
+    	Map <String, Double> valori= modello.getUmiditaMedia(mese);
+    	txtResult.setText("Per il mese "+mese+" del 2013, abbiamo questi dati:\n"
+    			+ "Umidita' media per Citta':\n");
+    	
+    	for (String citta : valori.keySet()) {
+    		txtResult.appendText(citta+": "+Math.round(valori.get(citta))+"%\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -48,7 +62,13 @@ public class FXMLController {
         assert btnUmidita != null : "fx:id=\"btnUmidita\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnCalcola != null : "fx:id=\"btnCalcola\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
-
+        boxMese.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        boxMese.setValue(1);
     }
+    
+    Model modello;
+    public void setModello(Model modello) {
+		this.modello = modello;
+	}
 }
 
