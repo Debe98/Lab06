@@ -5,11 +5,11 @@ import java.util.*;
 public class Blocco {
 	private int nBlocco;
 	private int umiditaTot;
-	private String località;
+	private String localita;
 	
 	public Blocco(List <Rilevamento> a, int nBlocco) {
 		super();
-		località = a.get(0).getLocalita();
+		localita = a.get(0).getLocalita();
 		umiditaTot = 0;
 		for (Rilevamento r : a) {
 			umiditaTot+= r.getUmidita();
@@ -26,7 +26,7 @@ public class Blocco {
 	}
 
 	public String getLocalità() {
-		return località;
+		return localita;
 	}
 	
 	
